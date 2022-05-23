@@ -2,11 +2,11 @@
 from part1_checker import noDuplicates
 import rospy
 import std_msgs
-from std_msgs.msg import Int32
+from std_msgs.msg import Int64
 import numpy as np
 import os
 
-pub = rospy.Publisher('/guess_part1', Int32, queue_size=100)
+pub = rospy.Publisher('/guess_part1', Int64, queue_size=100)
 
 
 def dollarcentCallback(data):
@@ -16,9 +16,9 @@ def dollarcentCallback(data):
 
 def strategy():
     global dollarcent
-    msg = Int32()
+    msg = Int64()
     # Your code here
-    # Make sure to publish only distinct 4 digit numbers else you just increase your number of tries and decrease your score :)
+    # Make sure to publish only distinct n digit numbers else you just increase your number of tries and decrease your score :)
     # If dollarcent = 999 You Win, you can now stop publishing
     # If dollarcent = -999 you probably entered a duplicate number or a number out of range, try again
 
@@ -27,7 +27,7 @@ def play():
     global dollarcent
     dollarcent = 0
     rospy.init_node('player1')
-    rospy.Subscriber("/check1", Int32, dollarcentCallback)
+    rospy.Subscriber("/check1", Int64, dollarcentCallback)
     while not rospy.is_shutdown():
         strategy()
 

@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 import rospy
 import std_msgs
-from std_msgs.msg import Int32
+from std_msgs.msg import Int64
 import numpy as np
 import random
 import os
 
-pub1 = rospy.Publisher('/check2', Int32, queue_size=100)
+pub1 = rospy.Publisher('/check2', Int64, queue_size=100)
 
 tries = 0
 
@@ -20,32 +20,33 @@ def noDuplicates(num):
     else:
         return False
   
-def generateNum():
+def generateNum(lower_bound,upper_bound):
     while True:
-        num = random.randint(1000,9999)
+        num = random.randint(lower_bound,upper_bound)
         if noDuplicates(num):
             return num
   
 def guessCallback(data):
-    global guess
+    global guess,lower_bound,upper_bound,digits
     guess = data.data
+    msg = Int64()
     if not noDuplicates(guess):
         guess = None
-        msg = Int32()
         msg.data = -999
         pub1.publish(msg)
         print("Please enter number without duplicates. Try again.")
-
-
-def centsdollars():
-    global guess,answer,tries
-    msg = Int32()
-    c,b=0,0
-    if guess < 1000 or guess > 9999:
+        return
+    if guess < lower_bound or guess > upper_bound:
         msg.data = -999
         pub1.publish(msg)
-        print("Enter 4 digit number only. Try again.")
+        print("Enter "+str(digits)+" digit number only. Try again.")
         return
+
+def centsdollars():
+    global guess,answer,tries,lower_bound,upper_bound
+    msg = Int64()
+    c,b=0,0
+
     answer_li = getDigits(answer)
     guess_li = getDigits(guess)
     if guess == answer:
@@ -68,13 +69,15 @@ def centsdollars():
 
 
 def check2():
-    global guess,answer,tries
+    global guess,answer,tries,lower_bound,upper_bound,digits
     guess = None
     answer = None
-    rospy.init_node('check2')
-    rospy.Subscriber("/guess_part2", Int32, guessCallback)
-    answer = generateNum()
-    print("Actual answer is ",answer)
+    rospy.init_node('centsdollars2')
+    rospy.Subscriber("/guess_part2", Int64, guessCallback)
+    digits = rospy.get_param("/centsdollars2/digits")
+    lower_bound = pow(10,digits-1)
+    upper_bound = pow(10,digits)-1
+    answer = generateNum(lower_bound,upper_bound)
     while not rospy.is_shutdown():
         if guess is not None:
             centsdollars()
