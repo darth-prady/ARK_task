@@ -6,7 +6,9 @@ import numpy as np
 import random
 import os
 
-pub1 = rospy.Publisher('/check1', Int32, queue_size=10)
+pub1 = rospy.Publisher('/check1', Int32, queue_size=100)
+
+tries = 0
 
 def getDigits(num):
     return [int(i) for i in str(num)]
@@ -36,9 +38,9 @@ def guessCallback(data):
 
 
 def centsdollars():
+    global guess,answer,tries
     msg = Int32()
     c,b=0,0
-    global guess,answer
     if guess < 1000 or guess > 9999:
         msg.data = -999
         pub1.publish(msg)
@@ -51,38 +53,34 @@ def centsdollars():
         print("The correct number is: " + str(answer))
         msg.data = 999
         pub1.publish(msg)
-        os.system("rosnode kill /check1")
     else:
+        tries+=1
         for i,j in zip(answer_li,guess_li):        
-        # common digit present
             if j in answer_li:
-                # common digit exact match
                 if j == i:
                     b += 1 
-                # common digit match but in wrong position
                 else:
                     c += 1
         msg.data = b*10 + c
-        print("You have " + str(b) + " dollars and " + str(c) + " cents.")
+        # print("You have " + str(b) + " dollars and " + str(c) + " cents.")
         pub1.publish(msg)
         
 
 
 def check1():
-    global guess,answer
+    global guess,answer,tries
     guess = None
     answer = None
     rospy.init_node('check1')
     rospy.Subscriber("/guess_part1", Int32, guessCallback)
     answer = generateNum()
-    # print("Actual answer is ",answer)
-    rate =rospy.Rate(10)
+    print("Actual answer is ",answer)
     while not rospy.is_shutdown():
         if guess is not None:
             centsdollars()
+            tries+=1
             guess = None
 
-        rate.sleep()
 
 
 
