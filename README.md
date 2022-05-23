@@ -2,12 +2,12 @@
 ## 1. Prerequisites
 ### 1.1 **Ubuntu** and **ROS**
 This package has been tested on Ubuntu 18.04 with ROS Melodic. Installation instructions for ROS Melodic can be found [here](http://wiki.ros.org/melodic/Installation).
-
+<!-- 
 ### 1.2. **Libraries** 
 We used the following libraries: [Numpy](https://numpy.org/)
 ```
     pip install numpy
-```
+``` -->
 
 ## 2. Build the Repository
 Clone the repository and catkin build:
