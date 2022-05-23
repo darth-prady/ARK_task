@@ -13,7 +13,7 @@ We used the following libraries: [Numpy](https://numpy.org/)
 Clone the repository and catkin build:
 ```
     cd ~/catkin_ws/src
-    git clone https://github.com/team5-interiit22/drdo_interiit22
+    https://github.com/Lazar-Wolfe/cents_and_dollars
     cd ../
     catkin build cents_and_dollars
     source ~/catkin_ws/devel/setup.bash
