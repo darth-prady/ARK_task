@@ -24,9 +24,11 @@ Clone the repository and catkin build:
     cd catkin_ws/src
     roslaunch cents_and_dollars part1.launch
 ```
+You can change the value of digits from /launch/part1.launch
 
 ## 4. Running Part-2: 
 ```
     cd catkin_ws/src
     roslaunch cents_and_dollars part2.launch
 ```
+You can change the value of digits from /launch/part2.launch
