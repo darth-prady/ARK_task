@@ -63,7 +63,7 @@ def centsdollars():
                 else:
                     c += 1
         msg.data = b*10 + c
-        # print("You have " + str(b) + " dollars and " + str(c) + " cents.")
+        print("You have " + str(b) + " dollars and " + str(c) + " cents.")
         pub1.publish(msg)
         
 
@@ -73,7 +73,7 @@ def check1():
     guess = None
     answer = None
     rospy.init_node('centsdollars1')
-    digits = rospy.get_param("/centsdollars/digits")
+    digits = rospy.get_param("/centsdollars1/digits")
     lower_bound = pow(10,digits-1)
     upper_bound = pow(10,digits)-1
     rospy.Subscriber("/guess_part1", Int64, guessCallback)
