@@ -30,12 +30,23 @@ if(len(loc[0]) != 0 and len(loc[1]) != 0):
     for pt in zip(*loc[::-1]):
         cv2.rectangle(limg, pt, (pt[0] + obs.shape[1], pt[1] + obs.shape[0]), (0,255,255), 3)
         cv2.imshow("temp",limg)
-        x=pt[1] + obs.shape[0]//2
-        y=pt[0] + obs.shape[1]//2
+        xl=pt[1] + obs.shape[0]//2
+        yl=pt[0] + obs.shape[1]//2
 
-f=p_left[0][0]
-d=p_right[1][3]-p_left[1][3]
-dist=f*d/depthmap[x][y]
+res = cv2.matchTemplate(rimg,obs,cv2.TM_CCORR_NORMED)
+loc = np.where(res >= threshold)
+
+if(len(loc[0]) != 0 and len(loc[1]) != 0):
+    for pt in zip(*loc[::-1]):
+        cv2.rectangle(limg, pt, (pt[0] + obs.shape[1], pt[1] + obs.shape[0]), (0,255,255), 3)
+        cv2.imshow("temp",limg)
+        xr=pt[1] + obs.shape[0]//2
+        yr=pt[0] + obs.shape[1]//2    
+     
+fx=p_left[0][0]
+fy=p_left[1][1]
+d=(p_right[1][3]-p_left[1][3])/fy
+dist=fy*d/(xr-xl)
 print("Distance = ",dist)
 
 plt.title("Depth Map")
