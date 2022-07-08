@@ -43,10 +43,8 @@ if(len(loc[0]) != 0 and len(loc[1]) != 0):
         xr=pt[1] + obs.shape[0]//2
         yr=pt[0] + obs.shape[1]//2    
      
-fx=p_left[0][0]
-fy=p_left[1][1]
-d=(p_right[1][3]-p_left[1][3])/fy
-dist=fy*d/(xr-xl)
+fy_multi_d=(p_right[1][3]-p_left[1][3])
+dist=fy_multi_d/(xr-xl)
 print("Distance = ",dist)
 
 plt.title("Depth Map")
